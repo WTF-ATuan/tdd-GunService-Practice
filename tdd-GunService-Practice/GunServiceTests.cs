@@ -29,6 +29,13 @@ public class GunServiceTests{
 		return returnBullet;
 	}
 
+	private void MultiFire(int count){
+		for(int i = 0; i < count; i++){
+			_gunService.Fire();
+			
+		}
+	}
+
 	[Test]
 	public void fire_when_7_bullet_then_should_return_6_bullet(){
 		var returnBullet = ReturnFiredBulletCount();
@@ -46,10 +53,23 @@ public class GunServiceTests{
 		_gunService.Fire();
 		Assert.IsTrue(actionIsInvoked);
 	}
+
 	[Test]
 	public void fire_when_0_bullet_then_should_return_0_bullet(){
 		SetAmmoCount(0);
 		var returnBullet = ReturnFiredBulletCount();
 		Assert.AreEqual(0, returnBullet);
+	}
+
+	[Test]
+	public void reload_when_5_bullet_then_should_return_7_bullet(){
+		var ammoCount = 0;
+		void TestAction(int amount){
+			ammoCount = amount;
+		}
+		_gunService.OnReload += TestAction;
+		MultiFire(2);
+		_gunService.Reload();
+		Assert.AreEqual(7 , ammoCount);
 	}
 }
