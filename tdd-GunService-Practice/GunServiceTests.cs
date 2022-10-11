@@ -32,7 +32,6 @@ public class GunServiceTests{
 	private void MultiFire(int count){
 		for(int i = 0; i < count; i++){
 			_gunService.Fire();
-			
 		}
 	}
 
@@ -43,12 +42,14 @@ public class GunServiceTests{
 	}
 
 	[Test]
-	public void fire_when_0_bullet_then_should_sand_noAmmo_event(){
+	public void fire_when_0_bullet_then_should_receive_noAmmo_event(){
 		SetAmmoCount(0);
 		var actionIsInvoked = false;
+
 		void TestAction(){
 			actionIsInvoked = true;
 		}
+
 		_gunService.OnNoAmmo += TestAction;
 		_gunService.Fire();
 		Assert.IsTrue(actionIsInvoked);
@@ -64,12 +65,33 @@ public class GunServiceTests{
 	[Test]
 	public void reload_when_5_bullet_then_should_return_7_bullet(){
 		var ammoCount = 0;
+
 		void TestAction(int amount){
 			ammoCount = amount;
 		}
+
 		_gunService.OnReload += TestAction;
 		MultiFire(2);
 		_gunService.Reload();
-		Assert.AreEqual(7 , ammoCount);
+		Assert.AreEqual(7, ammoCount);
+	}
+
+	[Test]
+	public void multiFire_when_7_bullet_and_8_times_fire_should_receive_no_ammo_event(){
+		var returnBullet = 0;
+		var noAmmoEventInvokeTimes = 0;
+		void NoAmmoTestAction(){
+			noAmmoEventInvokeTimes++;
+		}
+
+		void FireTestAction(int amount){
+			returnBullet = amount;
+		}
+
+		_gunService.OnFire += FireTestAction;
+		_gunService.OnNoAmmo += NoAmmoTestAction;
+		MultiFire(8);
+		Assert.AreEqual(0, returnBullet);
+		Assert.AreEqual(1 , noAmmoEventInvokeTimes);
 	}
 }
