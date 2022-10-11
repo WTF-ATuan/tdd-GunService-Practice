@@ -12,7 +12,7 @@ public class GunService{
 			OnNoAmmo?.Invoke();
 			return;
 		}
-
+		
 		_currentAmmoCount -= 1;
 		OnFire?.Invoke(_currentAmmoCount);
 	}

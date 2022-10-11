@@ -17,8 +17,7 @@ public class GunServiceTests{
 		_gunService = new GunService(ammoCount);
 	}
 
-	[Test]
-	public void fire_when_7_bullet_then_should_return_6_bullet(){
+	private int ReturnFiredBulletCount(){
 		var returnBullet = 0;
 
 		void TestAction(int amount){
@@ -27,8 +26,15 @@ public class GunServiceTests{
 
 		_gunService.OnFire += TestAction;
 		_gunService.Fire();
+		return returnBullet;
+	}
+
+	[Test]
+	public void fire_when_7_bullet_then_should_return_6_bullet(){
+		var returnBullet = ReturnFiredBulletCount();
 		Assert.AreEqual(6, returnBullet);
 	}
+
 	[Test]
 	public void fire_when_0_bullet_then_should_sand_noAmmo_event(){
 		SetAmmoCount(0);
@@ -43,13 +49,7 @@ public class GunServiceTests{
 	[Test]
 	public void fire_when_0_bullet_then_should_return_0_bullet(){
 		SetAmmoCount(0);
-		var returnBullet = 0;
-		void TestAction(int amount){
-			returnBullet = amount;
-		}
-
-		_gunService.OnFire += TestAction;
-		_gunService.Fire();
+		var returnBullet = ReturnFiredBulletCount();
 		Assert.AreEqual(0, returnBullet);
 	}
 }
