@@ -7,11 +7,14 @@ public class GunService{
 		_currentAmmoCount = maxAmmoCount;
 	}
 	public void Fire(){
+		if(_currentAmmoCount < 1){
+			OnFire?.Invoke(_currentAmmoCount);
+			OnNoAmmo?.Invoke();
+			return;
+		}
+
 		_currentAmmoCount -= 1;
 		OnFire?.Invoke(_currentAmmoCount);
-		if(_currentAmmoCount < 1){
-			OnNoAmmo?.Invoke();
-		}
 	}
 
 	public Action<int> OnFire{ get; set; }

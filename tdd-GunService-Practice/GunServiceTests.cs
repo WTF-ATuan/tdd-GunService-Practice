@@ -40,4 +40,16 @@ public class GunServiceTests{
 		_gunService.Fire();
 		Assert.IsTrue(actionIsInvoked);
 	}
+	[Test]
+	public void fire_when_0_bullet_then_should_return_0_bullet(){
+		SetAmmoCount(0);
+		var returnBullet = 0;
+		void TestAction(int amount){
+			returnBullet = amount;
+		}
+
+		_gunService.OnFire += TestAction;
+		_gunService.Fire();
+		Assert.AreEqual(0, returnBullet);
+	}
 }
