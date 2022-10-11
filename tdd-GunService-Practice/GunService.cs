@@ -8,9 +8,12 @@ public class GunService{
 	}
 	public void Fire(){
 		_currentAmmoCount -= 1;
-		OnFire.Invoke(_currentAmmoCount);
+		OnFire?.Invoke(_currentAmmoCount);
+		if(_currentAmmoCount < 1){
+			OnNoAmmo?.Invoke();
+		}
 	}
 
 	public Action<int> OnFire{ get; set; }
-	public Action NoAmmo{ get; set; }
+	public Action OnNoAmmo{ get; set; }
 }

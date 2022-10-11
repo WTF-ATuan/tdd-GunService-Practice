@@ -12,18 +12,32 @@ public class GunServiceTests{
 	public void Setup(){
 		_gunService = new GunService(7);
 	}
+
+	private void SetAmmoCount(int ammoCount){
+		_gunService = new GunService(ammoCount);
+	}
+
 	[Test]
 	public void fire_when_7_bullet_then_should_return_6_bullet(){
-		var gunService = _gunService;
 		var returnBullet = 0;
 
 		void TestAction(int amount){
 			returnBullet = amount;
 		}
 
-		gunService.OnFire += TestAction;
-		gunService.Fire();
+		_gunService.OnFire += TestAction;
+		_gunService.Fire();
 		Assert.AreEqual(6, returnBullet);
 	}
-	
+	[Test]
+	public void fire_when_0_bullet_then_should_sand_noAmmo_event(){
+		SetAmmoCount(0);
+		var actionIsInvoked = false;
+		void TestAction(){
+			actionIsInvoked = true;
+		}
+		_gunService.OnNoAmmo += TestAction;
+		_gunService.Fire();
+		Assert.IsTrue(actionIsInvoked);
+	}
 }
